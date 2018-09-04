@@ -9,6 +9,7 @@ GEM
       ffi (>= 1.9.0)
     nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
+    parallel (1.12.1)
     rubyzip (1.2.2)
     selenium-webdriver (3.14.0)
       childprocess (~> 0.5)
@@ -20,6 +21,7 @@ PLATFORMS
 DEPENDENCIES
   natto
   nokogiri
+  parallel
   selenium-webdriver
 
 BUNDLED WITH
