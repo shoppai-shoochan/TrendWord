@@ -7,11 +7,11 @@
 </head>
 <h1>Trendword(<%= Time.now %>)</h1>
 <ul>
-	<% trendword.wordcounts.each do |word,num| %>
+	<% wordcounts.each do |word,num| %>
 		<li><a href="<%= '#' + word %>"><%= word + '：' + num.to_s + '回' %>
 			(
 			<% companys = [] %>
-			<% trendword.wordarticles[word].each do |company,title,link| %>
+			<% wordarticles[word].each do |company,title,link| %>
 				<% companys << company %>
 			<% end %>
 			<%= companys.uniq.join(',') %>
@@ -19,7 +19,7 @@
 		</a></li>
 	<% end %>
 </ul>
-<% trendword.wordarticles.each do |word,articles| %>
+<% wordarticles.each do |word,articles| %>
 	<h2><%= word %></h2>
 	<% articles.each do |company,title,link| %>
 		<ul id="<%= word %>">

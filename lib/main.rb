@@ -27,5 +27,5 @@ sites.each{|site|
 
 trendword = Analize.new(articles)
 trendword.analizing
-write_html
+write_html(trendword.wordcounts,trendword.wordarticles)
 
