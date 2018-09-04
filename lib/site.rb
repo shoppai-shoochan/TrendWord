@@ -1,4 +1,4 @@
-require 'open-uri'
+#require 'open-uri'
 
 class Site
   #引数のsource_urlは最後に/を付けること

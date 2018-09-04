@@ -5,13 +5,13 @@
 	<meta charset="utf-8"/>
 	<title>Trendword</title>
 </head>
-<h1>Trendword</h1>
+<h1>Trendword(<%= Time.now %>)</h1>
 <ul>
-	<% wordcounts.each do |word,num| %>
+	<% trendword.wordcounts.each do |word,num| %>
 		<li><a href="<%= '#' + word %>"><%= word + '：' + num.to_s + '回' %>
 			(
 			<% companys = [] %>
-			<% wordarticles[word].each do |company,title,link| %>
+			<% trendword.wordarticles[word].each do |company,title,link| %>
 				<% companys << company %>
 			<% end %>
 			<%= companys.uniq.join(',') %>
@@ -19,7 +19,7 @@
 		</a></li>
 	<% end %>
 </ul>
-<% wordarticles.each do |word,articles| %>
+<% trendword.wordarticles.each do |word,articles| %>
 	<h2><%= word %></h2>
 	<% articles.each do |company,title,link| %>
 		<ul id="<%= word %>">
