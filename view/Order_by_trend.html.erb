@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Trendword</title>
+</head>
+<h1>Trendword</h1>
+<ul>
+	<% wordcounts.each do |word,num| %>
+		<li><a href="<%= '#' + word %>"><%= word + '：' + num.to_s + '回' %>
+			(
+			<% companys = [] %>
+			<% wordarticles[word].each do |company,title,link| %>
+				<% companys << company %>
+			<% end %>
+			<%= companys.uniq.join(',') %>
+			)
+		</a></li>
+	<% end %>
+</ul>
+<% wordarticles.each do |word,articles| %>
+	<h2><%= word %></h2>
+	<% articles.each do |company,title,link| %>
+		<ul id="<%= word %>">
+			<li><a href="<%= link %>"><%= title %>(<%= company %>) : <%= link %></a></li>
+		</ul>
+	<% end %>
+<% end %>
+</html>
