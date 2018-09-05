@@ -9,13 +9,11 @@
 <ul>
 	<% wordcounts.each do |word,num| %>
 		<li><a href="<%= '#' + word %>"><%= word + '：' + num.to_s + '回' %>
-			(
 			<% companys = [] %>
 			<% wordarticles[word].each do |company,title,link| %>
 				<% companys << company %>
 			<% end %>
-			<%= companys.uniq.join(',') %>
-			)
+			<%= '(' + companys.uniq.join(',') + ')'%>
 		</a></li>
 	<% end %>
 </ul>
