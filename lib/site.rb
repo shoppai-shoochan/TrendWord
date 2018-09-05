@@ -25,6 +25,7 @@ class Site
 
 
   #open-uriでhtmlを取得
+	#戻り値はhtmlデータ
   def get_html_openuri
     charset = nil
     #html取得
@@ -38,7 +39,8 @@ class Site
 
 
   #seleniumでhtmlを取得
-  #戻り値はサイトのhtml
+  #戻り値はhtmlデータ
+	#javascript対策
   def get_html_selenium
     #Selenium::WebDriver::Chrome.driver_path = "/usr/local/bin/chromedriver"
     driver = Selenium::WebDriver.for :chrome
@@ -135,7 +137,7 @@ end
 #Yahooエンタメ総合
 class YahooEntame < Site
   #initializeをオーバライド
-  #urlの前処理をやめる
+  #urlの前処理をやめる（クエリ付きのurlは末尾の/でリダイレクトされないため)
   def initialize(source_url,site_name)
       #スクレイピング対象ページのurl
       @source_url = source_url

@@ -5,11 +5,11 @@ class MeCabAnalize
 
   #初期化時にハッシュを受け取ること
   def initialize(articles)
-    #新聞社ごとの、タイトルとリンクの多重ハッシュ：{"company" => {"title1" => "link1"・・・}}
+    #新聞社ごとの、タイトルとリンクの多重ハッシュ：{"company" => {"title1" => "link1","title2" => "link2"・・・},・・・}
     @articles = articles
-    #単語と出現回数のハッシュ: {word => number ・・・　}
+    #単語と出現回数のハッシュ: {"word1"=> "number1","word2" => "number2",・・・　}
     @wordcounts = {}
-    #単語とその単語が属している記事のハッシュ: {word => [[company,title1,link1],[sankei,title2,link2],・・・]  ・・・}
+    #単語とその単語が属している記事のハッシュ: {"word" => [["company1","title1","link1"],["company2","title2","link2"],・・・]  ・・・}
     @wordarticles = {}
   end
 
@@ -21,7 +21,7 @@ class MeCabAnalize
         #MeCabで形態素解析、wordsには固有名詞の配列が入る
         words = extract_words_using_mecab(title)
         @wordcounts = word_count(words,@wordcounts) unless words.empty?
-        @wordarticles = word_belong_to_titles(company,words,title,link,@wordarticles)
+        @wordarticles = word_belong_to_titles(company,words,title,link,@wordarticles) unless words.empty?
       }
     }
     #ハッシュ{"word" => 出現回数 } を降順にソート
@@ -29,7 +29,7 @@ class MeCabAnalize
   end
 
 
-  #形態素解析で固有名詞のみ抽出
+  #MeCabの形態素解析で固有名詞のみ抽出
   #戻り値は固有名詞の配列[固有名詞１,固有名詞２]
   def extract_words_using_mecab(title)
     words = []
@@ -51,8 +51,10 @@ class MeCabAnalize
       #@wordcountsのkeyに、既にwordがあるかどうか？
       num = wordcounts[word]
       if num.nil?
+				#なければ1を代入
         wordcounts[word] = 1
       else
+				#あれば+1
         wordcounts[word] += 1
       end
     }
@@ -60,15 +62,17 @@ class MeCabAnalize
   end
 
 
-  #単語と、単語が属する記事タイトルの配列を、ハッシュで格納
+  #単語と、単語が属する記事の配列を、ハッシュで格納
   #戻り値はwordarticles
   def word_belong_to_titles(company,words,title,link,wordarticles)
     words.each{|word|
       #wordarticlesのkeyに、既にwordがあるかどうか
       titles = wordarticles[word]
       if titles.nil?
+				#なければ記事を代入
         wordarticles[word] = [[company,title,link]]
       else
+				#あれば記事を追加
         wordarticles[word] << [company,title,link]
       end
     }
