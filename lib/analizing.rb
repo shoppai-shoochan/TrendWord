@@ -1,4 +1,4 @@
-class Analize
+class MeCabAnalize
 
   attr_accessor :wordcounts,:wordarticles
 
@@ -18,10 +18,10 @@ class Analize
   def analizing
     @articles.each {|company,one_company_articles|
       one_company_articles.each{|title,link|
-        #wordには固有名詞の配列が入る
-        words = extract_words(title)
-        word_count(words) unless words.empty?
-        word_belong_to_titles(company,words,title,link)
+        #MeCabで形態素解析、wordsには固有名詞の配列が入る
+        words = extract_words_using_mecab(title)
+        @wordcounts = word_count(words,@wordcounts) unless words.empty?
+        @wordarticles = word_belong_to_titles(company,words,title,link,@wordarticles)
       }
     }
     #ハッシュ{"word" => 出現回数 } を降順にソート
@@ -31,7 +31,7 @@ class Analize
 
   #形態素解析で固有名詞のみ抽出
   #戻り値は固有名詞の配列[固有名詞１,固有名詞２]
-  def extract_words(title)
+  def extract_words_using_mecab(title)
     words = []
     #MeCabを利用
     mecab = Natto::MeCab.new
@@ -45,30 +45,34 @@ class Analize
 
 
   #単語の出現回数を計算
-  def word_count(words)
+  #戻り値はwordounts
+  def word_count(words,wordcounts)
     words.each{|word|
       #@wordcountsのkeyに、既にwordがあるかどうか？
-      num = @wordcounts[word]
+      num = wordcounts[word]
       if num.nil?
-        @wordcounts[word] = 1
+        wordcounts[word] = 1
       else
-        @wordcounts[word] += 1
+        wordcounts[word] += 1
       end
     }
+    wordcounts
   end
 
 
-  #単語と、単語が属する記事タイトルの配列を、ハッシュで関連づける
-  def word_belong_to_titles(company,words,title,link)
+  #単語と、単語が属する記事タイトルの配列を、ハッシュで格納
+  #戻り値はwordarticles
+  def word_belong_to_titles(company,words,title,link,wordarticles)
     words.each{|word|
       #wordarticlesのkeyに、既にwordがあるかどうか
-      titles = @wordarticles[word]
+      titles = wordarticles[word]
       if titles.nil?
-        @wordarticles[word] = [[company,title,link]]
+        wordarticles[word] = [[company,title,link]]
       else
-        @wordarticles[word] << [company,title,link]
+        wordarticles[word] << [company,title,link]
       end
     }
+    wordarticles
   end
 end
 
